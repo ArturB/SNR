@@ -6,8 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-tensorflow = "*"
+keras      = "*"
 matplotlib = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.7"
