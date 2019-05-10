@@ -1,2 +1,3 @@
 .idea/*
-dataset/*
+dataset/_negative/*
+dataset/_positive/*
