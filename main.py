@@ -34,17 +34,6 @@ if __name__ == '__main__':
     image_ds = path_ds.map(lambda p: tf.image.decode_image(tf.read_file(p)), num_parallel_calls=AUTOTUNE)
     image_ds = image_ds.map(lambda i: tf.image.resize_image_with_pad(i, TARGET_SHAPE[0], TARGET_SHAPE[1]))
 
-    # plt.figure(figsize=(8, 8))
-    # for n, image in enumerate(image_ds.take(4)):
-    #     plt.subplot(2, 2, n + 1)
-    #     plt.imshow(image)
-    #     plt.grid(False)
-    #     plt.xticks([])
-    #     plt.yticks([])
-    #     plt.xlabel("X Axis")
-    #     print("Plot image ", n)
-    # plt.show()
-
     label_ds = tf.data.Dataset.from_tensor_slices(tf.cast(all_image_labels, tf.int64))
     image_label_ds = tf.data.Dataset.zip((image_ds, label_ds))
     # image_label_ds = image_label_ds.filter(lambda t, _: tf.equal(t.shape, (200, 200, 3)))
