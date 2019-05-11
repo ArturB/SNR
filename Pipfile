@@ -6,10 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-jupyter    = "*"
-keras      = "*"
-matplotlib = "*"
-tensorflow = "*"
+jupyter        = "*"
+keras          = "*"
+matplotlib     = "*"
+tensorflow     = "*"
+tensorflow-gpu = "*"
 
 [requires]
 python_version = "3.7"

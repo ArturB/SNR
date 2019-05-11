@@ -1,12 +1,18 @@
 from __future__ import absolute_import, division, print_function
-import IPython.display as display
+import matplotlib.pyplot as plt
 import pathlib
 import random
-
 import tensorflow as tf
-tf.enable_eager_execution()
 
+tf.enable_eager_execution()
 AUTOTUNE = tf.data.experimental.AUTOTUNE
+BATCH_SIZE = 32
+TARGET_SHAPE = (192, 192, 3)
+
+
+def load_and_preprocess_image(path):
+    return tf.read_file(path)
+
 
 if __name__ == '__main__':
     data_root     = pathlib.Path("./dataset/_positive")
@@ -24,16 +30,51 @@ if __name__ == '__main__':
     all_image_labels = [label_to_index[pathlib.Path(path).parent.name] for path in all_image_paths]
     print("First 10 labels indices: ", all_image_labels[:10])
 
-    # img_path = all_image_paths[0]
-    # print(img_path)
-    # img_raw = tf.read_file(img_path)
-    # img_tensor = tf.image.decode_image(img_raw)
-    # print(img_tensor.shape)
-    # print(img_tensor.dtype)
+    path_ds = tf.data.Dataset.from_tensor_slices(all_image_paths)
+    image_ds = path_ds.map(lambda p: tf.image.decode_image(tf.read_file(p)), num_parallel_calls=AUTOTUNE)
+    image_ds = image_ds.map(lambda i: tf.image.resize_image_with_pad(i, TARGET_SHAPE[0], TARGET_SHAPE[1]))
 
-    all_image_tensors = [tf.image.decode_image(tf.read_file(img_path)) for img_path in all_image_paths[:10000]]
-    all_200x200_tensors = list(filter(lambda x: x.shape == (200,200,3), all_image_tensors))
-    print(len(all_200x200_tensors))
+    # plt.figure(figsize=(8, 8))
+    # for n, image in enumerate(image_ds.take(4)):
+    #     plt.subplot(2, 2, n + 1)
+    #     plt.imshow(image)
+    #     plt.grid(False)
+    #     plt.xticks([])
+    #     plt.yticks([])
+    #     plt.xlabel("X Axis")
+    #     print("Plot image ", n)
+    # plt.show()
+
+    label_ds = tf.data.Dataset.from_tensor_slices(tf.cast(all_image_labels, tf.int64))
+    image_label_ds = tf.data.Dataset.zip((image_ds, label_ds))
+    # image_label_ds = image_label_ds.filter(lambda t, _: tf.equal(t.shape, (200, 200, 3)))
+
+    ds = image_label_ds.shuffle(buffer_size=BATCH_SIZE)
+    ds = ds.repeat()
+    ds = ds.batch(BATCH_SIZE)
+    ds = ds.prefetch(buffer_size=AUTOTUNE)
+    print(ds)
+
+    mobile_net = tf.keras.applications.MobileNetV2(input_shape=(192, 192, 3), include_top=False)
+    mobile_net.trainable = False
+    model = tf.keras.Sequential([
+        mobile_net,
+        tf.keras.layers.GlobalAveragePooling2D(),
+        tf.keras.layers.Dense(len(label_names))])
+    model.compile(optimizer=tf.train.AdamOptimizer(),
+                  loss=tf.keras.losses.sparse_categorical_crossentropy,
+                  metrics=["accuracy"])
+
+    # keras_ds = ds.map(lambda t, l: (2*t-1,l))
+
+    model.fit(ds, epochs=1, steps_per_epoch=1000)
+
+
+
+
+
+
+
 
 
 
