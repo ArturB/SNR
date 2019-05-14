@@ -9,7 +9,6 @@ verify_ssl = true
 keras          = "*"
 matplotlib     = "*"
 tensorflow     = "*"
-tensorflow-gpu = "*"
 
 [requires]
-python_version = "3.7"
+python = "3.6"
