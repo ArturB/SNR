@@ -45,18 +45,15 @@ if __name__ == '__main__':
     print(ds)
 
     mobile_net = tf.keras.applications.MobileNetV2(input_shape=(192, 192, 3), include_top=False)
-    mobile_net.trainable = False
     model = tf.keras.Sequential([
         mobile_net,
         tf.keras.layers.GlobalAveragePooling2D(),
         tf.keras.layers.Dense(len(label_names))])
     model.compile(optimizer=tf.train.AdamOptimizer(),
-                  loss=tf.keras.losses.sparse_categorical_crossentropy,
+                  loss=tf.keras.losses.binary_crossentropy,
                   metrics=["accuracy"])
 
-    # keras_ds = ds.map(lambda t, l: (2*t-1,l))
-
-    model.fit(ds, epochs=1, steps_per_epoch=1000)
+    model.fit(ds, epochs=10, steps_per_epoch=50)
 
 
 
