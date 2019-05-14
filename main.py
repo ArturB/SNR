@@ -17,7 +17,7 @@ def load_and_preprocess_image(path):
 if __name__ == '__main__':
     data_root     = pathlib.Path("./dataset/_positive")
     data_root_neg = pathlib.Path("./dataset/_negative")
-    all_image_paths = list(data_root.glob('*/*.JPG'))
+    all_image_paths = list(data_root.glob('*/*.jpg'))
     all_image_paths = [str(path) for path in all_image_paths]
     random.shuffle(all_image_paths)
 
