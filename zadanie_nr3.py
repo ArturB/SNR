@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function
 from keras.applications.vgg16 import VGG16
+from keras.applications.vgg16 import VGG16
 from keras.datasets import fashion_mnist
 from keras import models, layers, optimizers
 
@@ -13,20 +14,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 BATCH_SIZE = 16
-TARGET_SIZE = (224, 224)
+TARGET_SIZE = (200, 200)
+INPUT_SHAPE = (200, 200, 1)
 VALIDATION_SPLIT = 0.3
 
-def basic_model_preparation(trainability):
+def basic_model_preparation():
     print('model preparation...')
-    vgg16_conv = VGG16(weights='imagenet')
-    vgg16_conv.layers.pop()
-    for layer in vgg16_conv.layers[:-trainability]:
-        layer.trainable = False
+    vgg16_conv = VGG16(include_top=False, weights=None, input_shape=INPUT_SHAPE)
     print(vgg16_conv.summary())
     model = models.Sequential()
-    # for layer in vgg16_conv.layers:
-    #     model.add(layer)
     model.add(vgg16_conv)
+    model.add(layers.Flatten())
+    model.add(layers.Dense(4096, activation='relu', name='fc1'))
+    model.add(layers.Dense(4096, activation='relu', name='fc2'))
     model.add(layers.Dense(105, activation='softmax', name='predictions'))
     print(model.summary())
     return model
@@ -34,8 +34,9 @@ def basic_model_preparation(trainability):
 def main(args):
 
     print('image preparation...')
-    train_generator = image_preparation(BATCH_SIZE, TARGET_SIZE, VALIDATION_SPLIT)
-    model = basic_model_preparation(2)
+    train_generator = image_preparation(BATCH_SIZE, TARGET_SIZE, VALIDATION_SPLIT, color_mode="grayscale")
+    model = basic_model_preparation()
+
     model.compile(optimizer=tf.train.AdamOptimizer(),
                   loss=tf.keras.losses.binary_crossentropy,
                   metrics=["accuracy"])

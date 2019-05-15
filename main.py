@@ -48,6 +48,7 @@ if __name__ == '__main__':
         mobile_net,
         tf.keras.layers.GlobalAveragePooling2D(),
         tf.keras.layers.Dense(len(label_names))])
+
     model.compile(optimizer=tf.train.AdamOptimizer(),
                   loss=tf.keras.losses.binary_crossentropy,
                   metrics=["accuracy"])
