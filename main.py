@@ -1,12 +1,11 @@
 from __future__ import absolute_import, division, print_function
-import matplotlib.pyplot as plt
 import pathlib
 import random
 import tensorflow as tf
 
 tf.enable_eager_execution()
 AUTOTUNE = tf.data.experimental.AUTOTUNE
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 TARGET_SHAPE = (192, 192, 3)
 
 
@@ -53,7 +52,7 @@ if __name__ == '__main__':
                   loss=tf.keras.losses.binary_crossentropy,
                   metrics=["accuracy"])
 
-    model.fit(ds, epochs=10, steps_per_epoch=50)
+    model.fit(ds, epochs=10, steps_per_epoch=8000)
 
 
 
