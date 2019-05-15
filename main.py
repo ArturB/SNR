@@ -12,12 +12,12 @@ if __name__ == '__main__':
     model = tf.keras.Sequential([
         mobile_net,
         tf.keras.layers.GlobalAveragePooling2D(),
-        tf.keras.layers.Dense(105)])
+        tf.keras.layers.Dense(10)])
     model.compile(optimizer=tf.train.AdamOptimizer(),
                   loss=tf.keras.losses.binary_crossentropy,
                   metrics=["accuracy"])
 
-    model.fit(ds, epochs=10, steps_per_epoch=8000)
+    model.fit(ds, epochs=10, steps_per_epoch=50)
 
 
 
