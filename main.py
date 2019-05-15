@@ -17,7 +17,7 @@ if __name__ == '__main__':
                   loss=tf.keras.losses.binary_crossentropy,
                   metrics=["accuracy"])
 
-    model.fit(ds, epochs=10, steps_per_epoch=50)
+    model.fit(ds, epochs=10, steps_per_epoch=8000)
 
 
 
