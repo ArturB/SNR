@@ -2,6 +2,7 @@ from __future__ import \
     absolute_import, \
     print_function
 import keras
+import matplotlib.pyplot as plt
 import pathlib
 import random
 import tensorflow as tf
@@ -77,16 +78,29 @@ def load_zalando_dataset(
     train_image_ds = tf.data.Dataset.from_tensor_slices(train_images)
     test_image_ds = tf.data.Dataset.from_tensor_slices(test_images)
 
-    train_image_ds = train_image_ds.map(lambda x: tf.reshape([x, x, x], (28, 28, 3)))
-    train_image_ds = train_image_ds.map(lambda x: tf.divide(tf.cast(x, tf.float16), 255.0))
+    def multiplicate_channel(t):
+        t = tf.reshape([t, t, t], (3, 28, 28, 1))
+        t = tf.transpose(t, [3, 1, 2, 0])
+        return t
+
+    train_image_ds = train_image_ds.map(multiplicate_channel)
     train_image_ds = train_image_ds.map(
-        lambda i: tf.image.resize_image_with_pad(i, target_shape[0], target_shape[1])
+        lambda i: tf.image.resize_bilinear(i, (target_shape[0], target_shape[1]))
     )
-    test_image_ds = test_image_ds.map(lambda x: tf.reshape([x, x, x], (28, 28, 3)))
+    train_image_ds = train_image_ds.map(lambda x: (2 * tf.cast(x, tf.float64) - 255.0) / 255.0)
+    train_image_ds = train_image_ds.map(
+        lambda x: tf.reshape(x, (target_shape[0], target_shape[1], 3))
+    )
+
     test_image_ds = test_image_ds.map(lambda x: tf.divide(tf.cast(x, tf.float16), 255.0))
+    test_image_ds = test_image_ds.map(multiplicate_channel)
     test_image_ds = test_image_ds.map(
-        lambda i: tf.image.resize_image_with_pad(i, target_shape[0], target_shape[1])
+        lambda i: tf.image.resize_bilinear(i, (target_shape[0], target_shape[1]))
     )
+    test_image_ds = test_image_ds.map(
+        lambda x: tf.reshape(x, (target_shape[0], target_shape[1], 3))
+    )
+    #test_image_ds = test_image_ds.map(lambda x: 2 * x - 1)
 
     train_label_ds = tf.data.Dataset.from_tensor_slices(tf.cast(train_labels, tf.int64))
     test_label_ds = tf.data.Dataset.from_tensor_slices(tf.cast(test_labels, tf.int64))
@@ -105,3 +119,38 @@ def load_zalando_dataset(
     test_ds = test_ds.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
     return train_ds, test_ds
+
+
+def plot_one_image(ds, image_size, index=0):
+    it = ds.make_one_shot_iterator()
+    for i in range(index):
+        t1, l1 = it.next()
+    t1, l1 = it.next()
+    t1 = tf.reshape(t1, (image_size[0], image_size[1], 3))
+
+    plt.figure()
+    plt.imshow(t1)
+    plt.colorbar()
+    plt.grid(False)
+
+    plt.show()
+
+
+def plot_sample(ds, image_size, start_index=0):
+    it = ds.make_one_shot_iterator()
+    for i in range(start_index):
+        t1, l1 = it.next()
+
+    plt.figure(figsize=(10, 10))
+    for i in range(25):
+        t1, l1 = it.next()
+        t1 = tf.reshape(t1, (image_size[0], image_size[1], 3))
+
+        plt.subplot(5, 5, i + 1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(t1, cmap=plt.cm.binary)
+        plt.xlabel(l1.numpy())
+    plt.show()
+
