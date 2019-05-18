@@ -32,12 +32,12 @@ class BatchImgDatasetFactory:
         label_ds = tf.data.Dataset.from_tensor_slices(tf.cast(labels_, tf.int64))
         image_label_ds = tf.data.Dataset.zip((image_ds, label_ds))
 
-        train_ds = image_label_ds.shuffle(buffer_size=self.batch_size)
-        train_ds = train_ds.repeat()
-        train_ds = train_ds.batch(self.batch_size)
-        train_ds = train_ds.prefetch(buffer_size=self.batch_size)
+        ds = image_label_ds.shuffle(buffer_size=self.batch_size)
+        ds = ds.repeat()
+        ds = ds.batch(self.batch_size)
+        ds = ds.prefetch(buffer_size=self.batch_size)
 
-        return train_ds
+        return ds
 
     def from_dir(
             self,
@@ -73,7 +73,7 @@ class BatchImgDatasetFactory:
         )
         test_ds = self.__make_batch_ds(test_ds, test_image_labels)
 
-        return train_ds, test_ds
+        return train_ds, test_ds, len(label_names)
 
     def zalando_dataset(self):
         fashion_mnist = keras.datasets.fashion_mnist
@@ -90,5 +90,5 @@ class BatchImgDatasetFactory:
         test_ds = tf.data.Dataset.from_tensor_slices(test_images)
         test_ds = self.__make_batch_ds(test_ds, test_labels, init_transformer=multiplicate_channel)
 
-        return train_ds, test_ds
+        return train_ds, test_ds, 10
 
