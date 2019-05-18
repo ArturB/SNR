@@ -1,0 +1,94 @@
+from __future__ import \
+    absolute_import, \
+    print_function
+import keras
+import pathlib
+import random
+import tensorflow as tf
+
+CPUs = tf.data.experimental.AUTOTUNE
+
+
+class BatchImgDatasetFactory:
+    def __init__(self, batch_size_, image_shape_, output_range_):
+        self.batch_size = batch_size_
+        self.image_shape = image_shape_
+        self.output_range = output_range_
+        self.output_range_w = output_range_[1] - output_range_[0]
+
+    def __make_batch_ds(self, image_ds_, labels_, init_transformer=lambda x: x, final_transformer=lambda x: x):
+        image_ds = image_ds_
+        image_ds = image_ds.map(init_transformer, num_parallel_calls=CPUs)
+        image_ds = image_ds.map(
+            lambda i: tf.image.resize_image_with_pad(i, self.image_shape[0], self.image_shape[1]),
+            num_parallel_calls=CPUs
+        )
+        image_ds = image_ds.map(
+            lambda x: (self.output_range_w * tf.cast(x, tf.float64) / 255.0) + self.output_range[0],
+            num_parallel_calls=CPUs
+        )
+        image_ds = image_ds.map(final_transformer, num_parallel_calls=CPUs)
+
+        label_ds = tf.data.Dataset.from_tensor_slices(tf.cast(labels_, tf.int64))
+        image_label_ds = tf.data.Dataset.zip((image_ds, label_ds))
+
+        train_ds = image_label_ds.shuffle(buffer_size=self.batch_size)
+        train_ds = train_ds.repeat()
+        train_ds = train_ds.batch(self.batch_size)
+        train_ds = train_ds.prefetch(buffer_size=self.batch_size)
+
+        return train_ds
+
+    def from_dir(
+            self,
+            data_root_path,
+            train_images_num,
+            file_format=".jpg"
+    ):
+        data_root = pathlib.Path(data_root_path)
+        all_image_paths = list(data_root.glob('*/*' + file_format))
+        all_image_paths = [str(path) for path in all_image_paths]
+        random.shuffle(all_image_paths)
+
+        label_names = sorted(item.name for item in data_root.glob('*/') if item.is_dir())
+        label_to_index = dict((name, index) for index, name in enumerate(label_names))
+        all_image_labels = [label_to_index[pathlib.Path(path).parent.name] for path in all_image_paths]
+
+        train_image_paths = all_image_paths[:train_images_num]
+        train_image_labels = all_image_labels[:train_images_num]
+        test_image_paths = all_image_paths[train_images_num:]
+        test_image_labels = all_image_labels[train_images_num:]
+
+        train_ds = tf.data.Dataset.from_tensor_slices(train_image_paths)
+        train_ds = train_ds.map(
+            lambda p: tf.image.decode_image(tf.read_file(p)),
+            num_parallel_calls=CPUs
+        )
+        train_ds = self.__make_batch_ds(train_ds, train_image_labels)
+
+        test_ds = tf.data.Dataset.from_tensor_slices(test_image_paths)
+        test_ds = test_ds.map(
+            lambda p: tf.image.decode_image(tf.read_file(p)),
+            num_parallel_calls=CPUs
+        )
+        test_ds = self.__make_batch_ds(test_ds, test_image_labels)
+
+        return train_ds, test_ds
+
+    def zalando_dataset(self):
+        fashion_mnist = keras.datasets.fashion_mnist
+        (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+
+        def multiplicate_channel(t):
+            t = tf.reshape([t, t, t], (3, 28, 28, 1))
+            t = tf.transpose(t, [3, 1, 2, 0])
+            t = tf.reshape(t, (28, 28, 3))
+            return t
+
+        train_ds = tf.data.Dataset.from_tensor_slices(train_images)
+        train_ds = self.__make_batch_ds(train_ds, train_labels, init_transformer=multiplicate_channel)
+        test_ds = tf.data.Dataset.from_tensor_slices(test_images)
+        test_ds = self.__make_batch_ds(test_ds, test_labels, init_transformer=multiplicate_channel)
+
+        return train_ds, test_ds
+

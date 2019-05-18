@@ -1,28 +1,30 @@
 from __future__ import absolute_import, division, print_function
-import dataset_loader as dl
+import BatchImgDatasetFactory as imgf
+import DatasetPlot as dsp
 import tensorflow as tf
 
 tf.enable_eager_execution()
-AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 if __name__ == '__main__':
-    ds, ts = dl.load_zalando_dataset((96, 96), batch_size=40)
-
-    #dl.plot_one_image(ds, (96, 96), index=1002)
-    #dl.plot_sample(ds, (96, 96), start_index=130)
-
-    mobile_net = tf.keras.applications.MobileNetV2(input_shape=(96, 96, 3), include_top=False)
-    mobile_net.trainable = False
+    imgF = imgf.BatchImgDatasetFactory(
+        batch_size_=32,
+        image_shape_=(96, 96),
+        output_range_=(-1, 1)
+    )
+    train_zalando, test_zalando = imgF.zalando_dataset()
+    # dsp.plot_sample(train_zalando, image_size=(96, 96), start_index=0)
 
     model = tf.keras.Sequential([
-        mobile_net,
-        tf.keras.layers.GlobalAveragePooling2D(),
-        tf.keras.layers.Dense(10)])
-    model.compile(optimizer=tf.train.AdamOptimizer(),
-                  loss=tf.keras.losses.binary_crossentropy,
-                  metrics=["accuracy"])
-
-    model.fit(ds, epochs=100, steps_per_epoch=10)
+        tf.keras.layers.Flatten(input_shape=(96, 96, 3)),
+        tf.keras.layers.Dense(128, activation=tf.nn.relu),
+        tf.keras.layers.Dense(10, activation=tf.nn.softmax)
+    ])
+    model.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    model.fit(train_zalando, steps_per_epoch=1000, epochs=5)
 
 
 
