@@ -10,14 +10,15 @@ tf.enable_eager_execution()
 
 if __name__ == '__main__':
     imgF = imgf.BatchImgDatasetFactory(
-        batch_size_=32,
+        batch_size_=100,
         image_shape_=(96, 96),
         output_range_=(-1, 1)
     )
-    train_ds, test_ds, label_num = imgF.from_dir(
-        data_root_path="../dataset/_positive",
-        train_images_num=128000
-    )
+    # train_ds, test_ds, label_num = imgF.from_dir(
+    #     data_root_path="../dataset/_positive",
+    #     train_images_num=128000
+    # )
+    train_ds, test_ds, label_num = imgF.zalando_dataset()
     # dsp.plot_sample(train_ds, start_index=120)
 
     mobile_net = tf.keras.applications.MobileNetV2(input_shape=(96, 96, 3), include_top=False)
@@ -33,12 +34,11 @@ if __name__ == '__main__':
     )
     checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
         "mobile.h5",
-        period=1,
-        in_memory=True
+        period=1
     )
     history = model.fit(
         train_ds,
-        steps_per_epoch=10,
+        steps_per_epoch=600,
         validation_data=test_ds,
         validation_steps=100,
         callbacks=[checkpoint_callback],
