@@ -37,13 +37,13 @@ if __name__ == '__main__':
     )
     model.fit(
         train_ds,
-        steps_per_epoch=1000,
+        steps_per_epoch=4000,
         validation_data=test_ds,
         validation_steps=100,
         # callbacks=[patience_callback]
-        epochs=10
+        epochs=5
     )
-    model.evaluate(test_ds, steps=100)
+    model.evaluate(test_ds, steps=1000)
     # model.save("/home/artur/Projekty/SNR/zalando-dense.h5")
 
 
