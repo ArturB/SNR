@@ -1,11 +1,14 @@
 from __future__ import \
     absolute_import, \
     print_function
+import copy
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
 
 def plot_colorbar(ds, image_size, index=0):
+    bs = ds.batch_size
+    ds.batch(batch_size=1)
     it = ds.make_one_shot_iterator()
     for i in range(index):
         t1, l1 = it.next()
@@ -17,10 +20,12 @@ def plot_colorbar(ds, image_size, index=0):
     plt.colorbar()
     plt.grid(False)
 
+    ds.batch(batch_size=bs)
+
     plt.show()
 
 
-def plot_sample(ds, image_size, start_index=0):
+def plot_sample(ds, start_index=0):
     it = ds.make_one_shot_iterator()
     for i in range(start_index):
         it.next()

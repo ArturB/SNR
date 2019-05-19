@@ -1,4 +1,7 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import \
+    absolute_import, \
+    division, \
+    print_function
 import BatchImgDatasetFactory as imgf
 import DatasetPlot as dsp
 import tensorflow as tf
@@ -7,16 +10,20 @@ tf.enable_eager_execution()
 
 if __name__ == '__main__':
     imgF = imgf.BatchImgDatasetFactory(
-        batch_size_=64,
+        batch_size_=32,
         image_shape_=(96, 96),
         output_range_=(-1, 1)
     )
-    train_zalando, test_zalando, label_num = imgF.zalando_dataset()
-    # dsp.plot_sample(train_zalando, image_size=(96, 96), start_index=0)
+    train_ds, test_ds, label_num = imgF.from_dir(
+        data_root_path="./dataset/_positive",
+        train_images_num=128000
+    )
+    # dsp.plot_sample(train_ds, start_index=120)
 
+    mobile_net = tf.keras.applications.MobileNetV2(input_shape=(96, 96, 3), include_top=False)
     model = tf.keras.Sequential([
-        tf.keras.layers.Flatten(input_shape=(96, 96, 3)),
-        tf.keras.layers.Dense(128, activation=tf.nn.relu),
+        mobile_net,
+        tf.keras.layers.GlobalAveragePooling2D(),
         tf.keras.layers.Dense(label_num, activation=tf.nn.softmax)
     ])
     model.compile(
@@ -24,13 +31,20 @@ if __name__ == '__main__':
         loss='sparse_categorical_crossentropy',
         metrics=['accuracy']
     )
-    model.fit(train_zalando, steps_per_epoch=300, epochs=5)
-
-
-
-
-
-
+    patience_callback = tf.keras.callbacks.EarlyStopping(
+        monitor='val_loss',
+        patience=100
+    )
+    model.fit(
+        train_ds,
+        steps_per_epoch=1000,
+        validation_data=test_ds,
+        validation_steps=100,
+        # callbacks=[patience_callback]
+        epochs=10
+    )
+    model.evaluate(test_ds, steps=100)
+    # model.save("/home/artur/Projekty/SNR/zalando-dense.h5")
 
 
 
