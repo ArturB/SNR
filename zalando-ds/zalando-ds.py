@@ -10,14 +10,10 @@ tf.enable_eager_execution()
 
 if __name__ == '__main__':
     imgF = imgf.BatchImgDatasetFactory(
-        batch_size_=100,
+        batch_size_=32,
         image_shape_=(96, 96),
         output_range_=(-1, 1)
     )
-    # train_ds, test_ds, label_num = imgF.from_dir(
-    #     data_root_path="../dataset/_positive",
-    #     train_images_num=128000
-    # )
     train_ds, test_ds, label_num = imgF.zalando_dataset()
     # dsp.plot_sample(train_ds, start_index=120)
 
@@ -38,14 +34,13 @@ if __name__ == '__main__':
     )
     history = model.fit(
         train_ds,
-        steps_per_epoch=600,
+        steps_per_epoch=1000,
         validation_data=test_ds,
-        validation_steps=100,
+        validation_steps=150,
         callbacks=[checkpoint_callback],
         epochs=5
     )
 
-    # model.save("/home/artur/Projekty/SNR/zalando-dense.h5")
 
 
 
