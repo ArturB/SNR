@@ -1,7 +1,6 @@
 from __future__ import \
     absolute_import, \
     print_function
-import keras
 import pathlib
 import random
 import tensorflow as tf
@@ -76,7 +75,7 @@ class BatchImgDatasetFactory:
         return train_ds, test_ds, len(label_names)
 
     def zalando_dataset(self):
-        fashion_mnist = keras.datasets.fashion_mnist
+        fashion_mnist = tf.keras.datasets.fashion_mnist
         (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
         def multiplicate_channel(t):
