@@ -4,7 +4,7 @@ from __future__ import \
     absolute_import, \
     division, \
     print_function
-from os import path
+import pathlib as path
 import random
 import tensorflow as tf
 
@@ -95,15 +95,6 @@ class BatchImgDatasetFactory:
         return train_ds, test_ds, 10
 
 
-class PrintCallback(tf.keras.callbacks.Callback):
-    def on_batch_end(self, batch, logs):
-        if batch % 100 == 0:
-            print('.')
-
-    def on_epoch_end(self, epoch, logs):
-        print(logs)
-
-
 tf.enable_eager_execution()
 
 if __name__ == '__main__':
@@ -127,7 +118,7 @@ if __name__ == '__main__':
         metrics=['accuracy']
     )
     board_callback = tf.keras.callbacks.TensorBoard(
-        log_dir="./logs",
+        log_dir="gs://snr/zalando_ds_logs3/logs",
         histogram_freq=0,
         batch_size=25,
         write_graph=True,
@@ -144,8 +135,8 @@ if __name__ == '__main__':
         steps_per_epoch=2400,
         validation_data=test_ds,
         validation_steps=400,
-        verbose=2,
-        callbacks=[board_callback, PrintCallback()],
+        verbose=1,
+        callbacks=[board_callback],
         epochs=10
     )
 
