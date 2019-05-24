@@ -20,6 +20,7 @@ def get_model_with_two_trainable_layers():
     mobile_net2.layers[-2].trainable = True
     model = tf.keras.models.Sequential()
     model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
     model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
     # print(model.summary())
     return model
@@ -33,6 +34,7 @@ def get_model_with_three_trainable_layers():
     mobile_net2.layers[-3].trainable = True
     model = tf.keras.models.Sequential()
     model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
     model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
     # print(model.summary())
     return model
@@ -47,6 +49,7 @@ def get_model_with_four_trainable_layers():
     mobile_net2.layers[-4].trainable = True
     model = tf.keras.models.Sequential()
     model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
     model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
     # print(model.summary())
     return model
@@ -62,6 +65,7 @@ def get_model_with_five_trainable_layers():
     mobile_net2.layers[-5].trainable = True
     model = tf.keras.models.Sequential()
     model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
     model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
     print(model.summary())
     return model

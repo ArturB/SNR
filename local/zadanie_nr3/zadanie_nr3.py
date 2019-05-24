@@ -18,10 +18,12 @@ TARGET_SIZE = (200, 200)
 INPUT_SHAPE = (200, 200, 1)
 VALIDATION_SPLIT = 0.3
 
+
 def get_model_with_all_trainable_layers():
     mobile_net2 = tf.keras.applications.MobileNetV2(input_shape=(224, 224, 3), include_top=False)
     model = tf.keras.models.Sequential()
     model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
     model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
     print(model.summary())
     return model
@@ -33,6 +35,7 @@ def get_model_with_dropped_layers():
     print(mobile_net2.summary())
     model = tf.keras.models.Sequential()
     model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
     model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
     print(model.summary())
     return model
@@ -41,6 +44,7 @@ def get_model_with_alpha(alpha=0.5):
     mobile_net2 = tf.keras.applications.MobileNetV2(input_shape=(224, 224, 3), alpha=alpha, include_top=False)
     model = tf.keras.models.Sequential()
     model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
     model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
     print(model.summary())
     return model
