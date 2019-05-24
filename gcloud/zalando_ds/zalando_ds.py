@@ -95,11 +95,20 @@ class BatchImgDatasetFactory:
         return train_ds, test_ds, 10
 
 
+class PrintCallback(tf.keras.callbacks.Callback):
+    def on_batch_end(self, batch, logs):
+        if batch % 100 == 0:
+            print('.')
+
+    def on_epoch_end(self, epoch, logs):
+        print(logs)
+
+
 tf.enable_eager_execution()
 
 if __name__ == '__main__':
     imgF = BatchImgDatasetFactory(
-        batch_size_=32,
+        batch_size_=25,
         image_shape_=(96, 96),
         output_range_=(-1, 1)
     )
@@ -120,7 +129,7 @@ if __name__ == '__main__':
     board_callback = tf.keras.callbacks.TensorBoard(
         log_dir="./logs",
         histogram_freq=0,
-        batch_size=32,
+        batch_size=25,
         write_graph=True,
         write_grads=True,
         write_images=True,
@@ -132,10 +141,11 @@ if __name__ == '__main__':
     )
     history = model.fit(
         train_ds,
-        steps_per_epoch=1000,
+        steps_per_epoch=2400,
         validation_data=test_ds,
-        validation_steps=300,
-        callbacks=[board_callback],
+        validation_steps=400,
+        verbose=2,
+        callbacks=[board_callback, PrintCallback()],
         epochs=10
     )
 
