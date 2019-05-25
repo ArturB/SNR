@@ -22,7 +22,7 @@
         <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr1/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+              <caret line="69" selection-start-line="69" selection-end-line="69" />
               <folding>
                 <element signature="e#20#102#0" expanded="true" />
               </folding>
@@ -288,7 +288,7 @@
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" weight="0.32956153" />
       <window_info anchor="bottom" id="Version Control" order="5" />
-      <window_info anchor="bottom" id="Run" order="6" visible="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.32956153" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -429,7 +429,7 @@
     <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr1/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+          <caret line="69" selection-start-line="69" selection-end-line="69" />
           <folding>
             <element signature="e#20#102#0" expanded="true" />
           </folding>
