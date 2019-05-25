@@ -4,11 +4,20 @@ from __future__ import \
     absolute_import, \
     division, \
     print_function
-import pathlib as path
+import math
+import os
 import random
 import tensorflow as tf
 
+BATCH_SIZE = 25
 CPUs = tf.data.experimental.AUTOTUNE
+EPOCHS = 10
+IMG_SHAPE = (224, 224, 3)
+JOB_NAME = "zadanie_nr3b"
+TRAIN_SET_SIZE = 128000
+TEST_SET_SIZE = 14800
+TRAIN_STEPS = math.floor(TRAIN_SET_SIZE / BATCH_SIZE)
+TEST_STEPS = math.floor(TEST_SET_SIZE / BATCH_SIZE)
 
 
 class BatchImgDatasetFactory:
@@ -47,14 +56,19 @@ class BatchImgDatasetFactory:
             train_images_num,
             file_format=".jpg"
     ):
-        data_root = path.Path(data_root_path)
-        all_image_paths = list(data_root.glob('*/*' + file_format))
-        all_image_paths = [str(path) for path in all_image_paths]
+        print("Data root path: ", data_root_path)
+        all_image_paths = tf.io.matching_files(data_root_path + "/*/*" + file_format)
+        all_image_paths = [str(path.decode()) for path in all_image_paths]
         random.shuffle(all_image_paths)
 
-        label_names = sorted(item.name for item in data_root.glob('*/') if item.is_dir())
+        label_names = tf.io.matching_files(data_root_path + "/*")
+        label_names = [str(path) for path in label_names]
+        label_names = sorted(label_names)
         label_to_index = dict((name, index) for index, name in enumerate(label_names))
-        all_image_labels = [label_to_index[path.Path(path).parent.name] for path in all_image_paths]
+        print("Sample key: ", os.path.dirname(str(all_image_paths[1])))
+        all_image_labels = [label_to_index[os.path.dirname(path)] for path in all_image_paths]
+
+        print("In ", data_root_path, " found ", len(all_image_paths), " images with ", len(label_names), " labels...")
 
         train_image_paths = all_image_paths[:train_images_num]
         train_image_labels = all_image_labels[:train_images_num]
@@ -99,28 +113,40 @@ tf.enable_eager_execution()
 
 if __name__ == '__main__':
     imgF = BatchImgDatasetFactory(
-        batch_size_=25,
-        image_shape_=(96, 96),
+        batch_size_=BATCH_SIZE,
+        image_shape_=IMG_SHAPE,
         output_range_=(-1, 1)
     )
-    train_ds, test_ds, label_num = imgF.zalando_dataset()
-    # dsp.plot_sample(train_ds, start_index=120)
+    train_ds, test_ds, label_num = \
+        imgF.from_dir(
+            data_root_path="gs://snr/dataset",
+            train_images_num=TRAIN_SET_SIZE
+        )
 
-    mobile_net = tf.keras.applications.MobileNetV2(input_shape=(96, 96, 3), include_top=False)
-    model = tf.keras.Sequential([
-        mobile_net,
-        tf.keras.layers.GlobalAveragePooling2D(),
-        tf.keras.layers.Dense(label_num, activation=tf.nn.softmax)
-    ])
+    ####################
+    # MODEL DEFINITION #
+    ####################
+
+    mobile_net2 = tf.keras.applications.MobileNetV2(input_shape=IMG_SHAPE, alpha=0.5, include_top=False)
+    model = tf.keras.models.Sequential()
+    model.add(mobile_net2)
+    model.add(tf.keras.layers.GlobalAveragePooling2D())
+    model.add(tf.keras.layers.Dense(label_num, activation='softmax', name='predictions'))
+
     model.compile(
         optimizer='adam',
         loss='sparse_categorical_crossentropy',
         metrics=['accuracy']
     )
+
+    #############
+    # END MODEL #
+    #############
+
     board_callback = tf.keras.callbacks.TensorBoard(
-        log_dir="gs://snr/zalando_ds_logs3/logs",
+        log_dir="gs://snr/" + JOB_NAME + "/logs",
         histogram_freq=0,
-        batch_size=25,
+        batch_size=BATCH_SIZE,
         write_graph=True,
         write_grads=True,
         write_images=True,
@@ -132,12 +158,11 @@ if __name__ == '__main__':
     )
     history = model.fit(
         train_ds,
-        steps_per_epoch=2400,
+        steps_per_epoch=TRAIN_STEPS,
         validation_data=test_ds,
-        validation_steps=400,
+        validation_steps=TEST_STEPS,
         verbose=1,
         callbacks=[board_callback],
-        epochs=10
+        epochs=EPOCHS
     )
-
 

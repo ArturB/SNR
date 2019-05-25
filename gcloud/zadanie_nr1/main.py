@@ -7,12 +7,13 @@ from __future__ import \
 import math
 import os
 import random
+import re
 import tensorflow as tf
 
-BATCH_SIZE = 25
+BATCH_SIZE = 50
 CPUs = tf.data.experimental.AUTOTUNE
 EPOCHS = 10
-IMG_SHAPE = (192, 192, 3)
+IMG_SHAPE = (96, 96, 3)
 JOB_NAME = "zadanie_nr1"
 TRAIN_SET_SIZE = 128000
 TEST_SET_SIZE = 14800
@@ -56,16 +57,23 @@ class BatchImgDatasetFactory:
             train_images_num,
             file_format=".jpg"
     ):
+        def path_from_tensor(tensor):
+            str_tens = str(tensor)
+            str_tens = re.search("b'.*'", str_tens).group(0)
+            str_tens = str_tens[2:-1]
+            return str_tens
+
         print("Data root path: ", data_root_path)
         all_image_paths = tf.io.matching_files(data_root_path + "/*/*" + file_format)
-        all_image_paths = [str(path.decode()) for path in all_image_paths]
+        all_image_paths = [path_from_tensor(path) for path in all_image_paths]
         random.shuffle(all_image_paths)
 
         label_names = tf.io.matching_files(data_root_path + "/*")
-        label_names = [str(path) for path in label_names]
+        label_names = [path_from_tensor(path) for path in label_names]
         label_names = sorted(label_names)
         label_to_index = dict((name, index) for index, name in enumerate(label_names))
-        print("Sample key: ", os.path.dirname(str(all_image_paths[1])))
+        print("Sample label: ", label_names[0])
+        print("Sample key: ", os.path.dirname(all_image_paths[0]))
         all_image_labels = [label_to_index[os.path.dirname(path)] for path in all_image_paths]
 
         print("In ", data_root_path, " found ", len(all_image_paths), " images with ", len(label_names), " labels...")
@@ -160,7 +168,7 @@ if __name__ == '__main__':
         embeddings_layer_names=None,
         embeddings_metadata=None,
         embeddings_data=None,
-        update_freq='batch'
+        update_freq=BATCH_SIZE*1000
     )
     history = model.fit(
         train_ds,
@@ -168,7 +176,7 @@ if __name__ == '__main__':
         validation_data=test_ds,
         validation_steps=TEST_STEPS,
         verbose=1,
-        callbacks=[board_callback],
+        # callbacks=[board_callback],
         epochs=EPOCHS
     )
 
