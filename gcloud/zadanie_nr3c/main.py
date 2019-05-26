@@ -7,13 +7,17 @@ from __future__ import \
 import math
 import os
 import random
+import re
+import subprocess
 import tensorflow as tf
+import urllib.request
+import tarfile
 
 BATCH_SIZE = 25
 CPUs = tf.data.experimental.AUTOTUNE
 EPOCHS = 10
-IMG_SHAPE = (224, 224, 3)
-JOB_NAME = "zadanie_nr3b"
+IMG_SHAPE = (96, 96, 3)
+JOB_NAME = "zadanie_nr1"
 TRAIN_SET_SIZE = 128000
 TEST_SET_SIZE = 14800
 TRAIN_STEPS = math.floor(TRAIN_SET_SIZE / BATCH_SIZE)
@@ -56,16 +60,23 @@ class BatchImgDatasetFactory:
             train_images_num,
             file_format=".jpg"
     ):
+        def path_from_tensor(tensor):
+            str_tens = str(tensor)
+            str_tens = re.search("b'.*'", str_tens).group(0)
+            str_tens = str_tens[2:-1]
+            return str_tens
+
         print("Data root path: ", data_root_path)
         all_image_paths = tf.io.matching_files(data_root_path + "/*/*" + file_format)
-        all_image_paths = [str(path.decode()) for path in all_image_paths]
+        all_image_paths = [path_from_tensor(path) for path in all_image_paths]
         random.shuffle(all_image_paths)
 
         label_names = tf.io.matching_files(data_root_path + "/*")
-        label_names = [str(path) for path in label_names]
+        label_names = [path_from_tensor(path) for path in label_names]
         label_names = sorted(label_names)
         label_to_index = dict((name, index) for index, name in enumerate(label_names))
-        print("Sample key: ", os.path.dirname(str(all_image_paths[1])))
+        print("Sample label: ", label_names[0])
+        print("Sample key: ", os.path.dirname(all_image_paths[0]))
         all_image_labels = [label_to_index[os.path.dirname(path)] for path in all_image_paths]
 
         print("In ", data_root_path, " found ", len(all_image_paths), " images with ", len(label_names), " labels...")
@@ -112,6 +123,14 @@ class BatchImgDatasetFactory:
 tf.enable_eager_execution()
 
 if __name__ == '__main__':
+    print(subprocess.check_output("pwd"))
+    urllib.request.urlretrieve("https://github.com/ArturB/SNR/releases/download/1.0.0/dataset.tar", "dataset-tar.tar")
+    print("URL retrieve done!")
+    td = tarfile.open("dataset-tar.tar")
+    td.extractall()
+    print("TAR extract done!")
+    print(subprocess.check_output(["ls", "-l"]))
+
     imgF = BatchImgDatasetFactory(
         batch_size_=BATCH_SIZE,
         image_shape_=IMG_SHAPE,
@@ -119,7 +138,7 @@ if __name__ == '__main__':
     )
     train_ds, test_ds, label_num = \
         imgF.from_dir(
-            data_root_path="gs://snr/dataset",
+            data_root_path="dataset",
             train_images_num=TRAIN_SET_SIZE
         )
 
@@ -127,12 +146,17 @@ if __name__ == '__main__':
     # MODEL DEFINITION #
     ####################
 
-    mobile_net2 = tf.keras.applications.MobileNetV2(input_shape=IMG_SHAPE, alpha=0.5, include_top=False)
-    model = tf.keras.models.Sequential()
-    model.add(mobile_net2)
-    model.add(tf.keras.layers.GlobalAveragePooling2D())
-    model.add(tf.keras.layers.Dense(label_num, activation='softmax', name='predictions'))
-
+    mobile_net2 = \
+        tf.keras.applications.MobileNetV2(
+            input_shape=IMG_SHAPE,
+            alpha=0.5,
+            include_top=False
+        )
+    model = tf.keras.models.Sequential([
+        mobile_net2,
+        tf.keras.layers.GlobalAveragePooling2D(),
+        tf.keras.layers.Dense(label_num, activation='softmax', name='predictions')
+    ])
     model.compile(
         optimizer='adam',
         loss='sparse_categorical_crossentropy',
@@ -145,7 +169,7 @@ if __name__ == '__main__':
 
     board_callback = tf.keras.callbacks.TensorBoard(
         log_dir="gs://snr/" + JOB_NAME + "/logs",
-        histogram_freq=0,
+        histogram_freq=1,
         batch_size=BATCH_SIZE,
         write_graph=True,
         write_grads=True,
@@ -154,7 +178,7 @@ if __name__ == '__main__':
         embeddings_layer_names=None,
         embeddings_metadata=None,
         embeddings_data=None,
-        update_freq='batch'
+        update_freq='epoch'
     )
     history = model.fit(
         train_ds,

@@ -8,9 +8,12 @@ import math
 import os
 import random
 import re
+import subprocess
 import tensorflow as tf
+import urllib.request
+import tarfile
 
-BATCH_SIZE = 50
+BATCH_SIZE = 25
 CPUs = tf.data.experimental.AUTOTUNE
 EPOCHS = 10
 IMG_SHAPE = (96, 96, 3)
@@ -120,6 +123,14 @@ class BatchImgDatasetFactory:
 tf.enable_eager_execution()
 
 if __name__ == '__main__':
+    print(subprocess.check_output("pwd"))
+    urllib.request.urlretrieve("https://github.com/ArturB/SNR/releases/download/1.0.0/dataset.tar", "dataset-tar.tar")
+    print("URL retrieve done!")
+    td = tarfile.open("dataset-tar.tar")
+    td.extractall()
+    print("TAR extract done!")
+    print(subprocess.check_output(["ls", "-l"]))
+
     imgF = BatchImgDatasetFactory(
         batch_size_=BATCH_SIZE,
         image_shape_=IMG_SHAPE,
@@ -127,7 +138,7 @@ if __name__ == '__main__':
     )
     train_ds, test_ds, label_num = \
         imgF.from_dir(
-            data_root_path="gs://snr/dataset",
+            data_root_path="dataset",
             train_images_num=TRAIN_SET_SIZE
         )
 
@@ -135,17 +146,18 @@ if __name__ == '__main__':
     # MODEL DEFINITION #
     ####################
 
-    mobile_net = \
+    mobile_net2 = \
         tf.keras.applications.MobileNetV2(
             input_shape=IMG_SHAPE,
-            include_top=False
+            include_top=False,
+            weights='imagenet'
         )
-    for layer in mobile_net.layers:
+    for layer in mobile_net2.layers:
         layer.trainable = False
     model = tf.keras.Sequential([
-        mobile_net,
+        mobile_net2,
         tf.keras.layers.GlobalAveragePooling2D(),
-        tf.keras.layers.Dense(label_num, activation=tf.nn.softmax)
+        tf.keras.layers.Dense(label_num, activation=tf.nn.softmax, name='predictions')
     ])
     model.compile(
         optimizer='adam',
@@ -159,7 +171,7 @@ if __name__ == '__main__':
 
     board_callback = tf.keras.callbacks.TensorBoard(
         log_dir="gs://snr/" + JOB_NAME + "/logs",
-        histogram_freq=0,
+        histogram_freq=1,
         batch_size=BATCH_SIZE,
         write_graph=True,
         write_grads=True,
@@ -168,7 +180,7 @@ if __name__ == '__main__':
         embeddings_layer_names=None,
         embeddings_metadata=None,
         embeddings_data=None,
-        update_freq=BATCH_SIZE*1000
+        update_freq='epoch'
     )
     history = model.fit(
         train_ds,
@@ -176,7 +188,7 @@ if __name__ == '__main__':
         validation_data=test_ds,
         validation_steps=TEST_STEPS,
         verbose=1,
-        # callbacks=[board_callback],
+        callbacks=[board_callback],
         epochs=EPOCHS
     )
 

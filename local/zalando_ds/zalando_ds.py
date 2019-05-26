@@ -118,8 +118,8 @@ if __name__ == '__main__':
         metrics=['accuracy']
     )
     board_callback = tf.keras.callbacks.TensorBoard(
-        log_dir="gs://snr/zalando_ds_logs3/logs",
-        histogram_freq=0,
+        log_dir="./logs",
+        histogram_freq=1,
         batch_size=25,
         write_graph=True,
         write_grads=True,
