@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c790b74-07a7-4904-971a-7c0e13977e2a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SNR.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SNR.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr2/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr2/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr4/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr4/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local/zadanie_nr3/zadanie_nr3.py" beforeDir="false" afterPath="$PROJECT_DIR$/local/zadanie_nr3/zadanie_nr3.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,46 +16,38 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/SNR$zadanie_nr3.coverage" NAME="zadanie_nr3 Coverage Results" MODIFIED="1559401863162" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/local/zadanie_nr3" />
+    <SUITE FILE_PATH="coverage/SNR$zalando_ds.coverage" NAME="zalando_ds Coverage Results" MODIFIED="1559337510763" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/local/zalando_ds" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr4/main.py">
+        <entry file="file://$PROJECT_DIR$/local/zadanie_nr3/zadanie_nr3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr1/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="157" column="20" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
+            <state relative-caret-position="180">
+              <caret line="73" column="26" selection-start-line="68" selection-start-column="3" selection-end-line="73" selection-end-column="26" />
               <folding>
-                <element signature="e#20#102#0" expanded="true" />
+                <element signature="e#44#108#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr2/main.py">
+        <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/keras/engine/base_layer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="23" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
-              <folding>
-                <element signature="e#20#102#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="97">
+              <caret line="401" selection-start-line="401" selection-end-line="401" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py">
+        <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/keras/engine/input_layer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+            <state relative-caret-position="503">
+              <caret line="68" selection-start-line="68" selection-end-line="68" />
             </state>
           </provider>
         </entry>
@@ -62,17 +55,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+            <state relative-caret-position="93">
+              <caret line="157" column="73" selection-start-line="157" selection-start-column="73" selection-end-line="157" selection-end-column="73" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py">
+        <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/training/checkpointable/base.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+            <state relative-caret-position="118">
+              <caret line="441" selection-start-line="441" selection-end-line="441" />
             </state>
           </provider>
         </entry>
@@ -90,17 +83,18 @@
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr1/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr2/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py" />
-        <option value="$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr4/main.py" />
+        <option value="$PROJECT_DIR$/local/zadanie_nr3/zadanie_nr3.py" />
+        <option value="$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="85" />
-    <option name="y" value="25" />
-    <option name="width" value="1750" />
-    <option name="height" value="980" />
+    <option name="x" value="-556" />
+    <option name="y" value="37" />
+    <option name="width" value="1279" />
+    <option name="height" value="698" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -110,6 +104,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -155,13 +150,13 @@
             <path>
               <item name="SNR" type="b2602c69:ProjectViewProjectNode" />
               <item name="SNR" type="462c0819:PsiDirectoryNode" />
-              <item name="gcloud" type="462c0819:PsiDirectoryNode" />
-              <item name="zadanie_nr4" type="462c0819:PsiDirectoryNode" />
+              <item name="local" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SNR" type="b2602c69:ProjectViewProjectNode" />
               <item name="SNR" type="462c0819:PsiDirectoryNode" />
               <item name="local" type="462c0819:PsiDirectoryNode" />
+              <item name="zadanie_nr3" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SNR" type="b2602c69:ProjectViewProjectNode" />
@@ -180,11 +175,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -198,7 +194,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.zalando_ds">
+  <component name="RunManager" selected="Python.zadanie_nr3">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SNR" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -211,7 +207,30 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gcloud/zadanie_nr1/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="zadanie_nr3" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SNR" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Programme_Files\SPB_Data\.virtualenvs\SNR-owNysSq3\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/local/zadanie_nr3" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/local/zadanie_nr3/zadanie_nr3.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -232,6 +251,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/local/zalando_ds/zalando_ds.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -241,8 +261,14 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.zadanie_nr3" />
+      <item itemvalue="Python.zalando_ds" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.zadanie_nr3" />
         <item itemvalue="Python.zalando_ds" />
         <item itemvalue="Python.main" />
       </list>
@@ -258,30 +284,45 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558802551654</updated>
+      <workItem from="1559333117542" duration="24456000" />
     </task>
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="24456000" />
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24966975" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25340393" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32956153" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.5507246" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32850242" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="R Packages" />
+      <window_info anchor="right" id="R Graphics" />
+      <window_info anchor="right" id="SciView" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr1/dataset.sh">
@@ -336,6 +377,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr4/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-646">
+          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr1/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -363,10 +411,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py">
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/keras/layers/merge.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+        <state relative-caret-position="257">
+          <caret line="120" selection-start-line="120" selection-end-line="120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/keras/engine/sequential.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="216" column="29" selection-start-line="216" selection-start-column="18" selection-end-line="216" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/eager/execute.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="146" selection-start-line="146" selection-end-line="146" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/training/checkpointable/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="441" selection-start-line="441" selection-end-line="441" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-XZKFQako/Lib/site-packages/pip/_vendor/pkg_resources/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="1646" column="8" selection-start-line="1646" selection-start-column="8" selection-end-line="1646" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/keras/engine/input_layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
         </state>
       </provider>
     </entry>
@@ -377,10 +460,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr4/main.py">
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/keras/engine/input_spec.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+        <state relative-caret-position="140">
+          <caret line="108" selection-start-line="108" selection-end-line="108" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Programme_Files/SPB_Data/.virtualenvs/SNR-owNysSq3/Lib/site-packages/tensorflow/python/keras/engine/base_layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="401" selection-start-line="401" selection-end-line="401" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="157" column="73" selection-start-line="157" selection-start-column="73" selection-end-line="157" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/local/zadanie_nr3/zadanie_nr3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="73" column="26" selection-start-line="68" selection-start-column="3" selection-end-line="73" selection-end-column="26" />
+          <folding>
+            <element signature="e#44#108#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
