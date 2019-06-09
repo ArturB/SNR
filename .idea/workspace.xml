@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="1c790b74-07a7-4904-971a-7c0e13977e2a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr2/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr2/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3a/logs/events.out.tfevents.1558989205.cmle-training-9739197549480556449.v2" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3b/logs/events.out.tfevents.1558990848.cmle-training-15529445527117843325.v2" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gcloud/zadanie_nr4/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gcloud/zadanie_nr4/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,7 +17,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr4/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
@@ -29,7 +29,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr1/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
+            <state relative-caret-position="2482">
               <caret line="157" column="20" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
               <folding>
                 <element signature="e#20#102#0" expanded="true" />
@@ -41,7 +41,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr2/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="136">
               <caret line="19" column="23" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
               <folding>
                 <element signature="e#20#102#0" expanded="true" />
@@ -50,7 +50,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
@@ -71,8 +71,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+            <state relative-caret-position="17">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
+              <folding>
+                <element signature="e#20#102#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -89,10 +92,10 @@
         <option value="$PROJECT_DIR$/local/zalando_ds/zalando_ds.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr1/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr2/main.py" />
+        <option value="$PROJECT_DIR$/gcloud/zadanie_nr4/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr3b/main.py" />
         <option value="$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py" />
-        <option value="$PROJECT_DIR$/gcloud/zadanie_nr4/main.py" />
       </list>
     </option>
   </component>
@@ -262,7 +265,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24966975" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -336,9 +339,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr4/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr1/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
+        <state relative-caret-position="2482">
           <caret line="157" column="20" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
           <folding>
             <element signature="e#20#102#0" expanded="true" />
@@ -348,18 +358,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr2/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
+        <state relative-caret-position="136">
           <caret line="19" column="23" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
           <folding>
             <element signature="e#20#102#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -372,15 +375,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3c/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <element signature="e#20#102#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr4/main.py">
+    <entry file="file://$PROJECT_DIR$/gcloud/zadanie_nr3a/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+        <state relative-caret-position="102">
+          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
         </state>
       </provider>
     </entry>

@@ -15,7 +15,7 @@ import tarfile
 
 BATCH_SIZE = 25
 CPUs = tf.data.experimental.AUTOTUNE
-EPOCHS = 10
+EPOCHS = 20
 IMG_SHAPE = (96, 96, 3)
 JOB_NAME = "zadanie_nr3b"
 TRAIN_SET_SIZE = 128000
