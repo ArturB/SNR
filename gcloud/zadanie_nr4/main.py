@@ -13,7 +13,6 @@ import tensorflow as tf
 import urllib.request
 import tarfile
 
-from keras.preprocessing.image import ImageDataGenerator
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix
 
@@ -155,7 +154,7 @@ if __name__ == '__main__':
     model_name = 'model_z3a.h5'
     ##################  MODEL SAVE  ########################
     if test:
-        mobile_net = \
+        model = \
             tf.keras.applications.MobileNetV2(
                 input_shape=IMG_SHAPE,
                 include_top=True,
@@ -229,7 +228,7 @@ if __name__ == '__main__':
     urllib.request.urlretrieve("https://github.com/ArturB/SNR/releases/download/1.0.1/dataset_svm.tar",
                                "dataset_svm.tar")
     print("URL retrieve done!")
-    td = tarfile.open("dataset-tar.tar")
+    td = tarfile.open("dataset_svm.tar")
     td.extractall()
     print("TAR extract done!")
 
