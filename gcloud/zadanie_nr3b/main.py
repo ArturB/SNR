@@ -151,13 +151,11 @@ if __name__ == '__main__':
             input_shape=IMG_SHAPE,
             include_top=False
         )
-    mobile_net2.layers.pop(-4)
-    mobile_net2.layers.pop(-5)
-    model = tf.keras.models.Sequential([
-        mobile_net2,
-        tf.keras.layers.GlobalAveragePooling2D(),
-        tf.keras.layers.Dense(label_num, activation='softmax', name='predictions')
-    ])
+    # bez Conv_1, Conv_1_bn
+    out_layer = tf.keras.layers.ReLU(max_value=6., negative_slope=0.0, threshold=0.0)(mobile_net2.layers[-4].output)
+    out_layer = tf.keras.layers.GlobalAveragePooling2D()(out_layer)
+    out_layer = tf.keras.layers.Dense(label_num, activation='softmax', name='predictions')(out_layer)
+    model = tf.keras.models.Model(mobile_net2.layers[0].input, out_layer)
     model.compile(
         optimizer='adam',
         loss='sparse_categorical_crossentropy',
@@ -190,4 +188,7 @@ if __name__ == '__main__':
         callbacks=[board_callback],
         epochs=EPOCHS
     )
+
+    ##################  MODEL SAVE  ########################
+    model.save('model_z3b.h5')
 

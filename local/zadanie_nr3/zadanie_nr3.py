@@ -6,6 +6,7 @@ from keras.applications.vgg16 import VGG16
 from keras.applications.vgg16 import VGG16
 from keras.datasets import fashion_mnist
 from keras import models, layers, optimizers
+from copy import deepcopy
 
 import tensorflow as tf
 
@@ -28,15 +29,28 @@ def get_model_with_all_trainable_layers():
     print(model.summary())
     return model
 
+
+def replace_intermediate_layer_in_keras(model, layer_id, new_layer):
+
+    layers = [l for l in model.layers]
+
+    x = layers[0].output
+    for i in range(1, len(layers)):
+        if i == layer_id:
+            x = new_layer(x)
+        else:
+            x = layers[i](x)
+
+    new_model = Model(input=layers[0].input, output=x)
+    return new_model
+
 def get_model_with_dropped_layers():
     mobile_net2 = tf.keras.applications.MobileNetV2(input_shape=(224, 224, 3), include_top=False)
-    mobile_net2.layers.pop(-4)
-    mobile_net2.layers.pop(-5)
-    print(mobile_net2.summary())
-    model = tf.keras.models.Sequential()
-    model.add(mobile_net2)
-    model.add(tf.keras.layers.GlobalAveragePooling2D())
-    model.add(tf.keras.layers.Dense(105, activation='softmax', name='predictions'))
+    out_layer = tf.keras.layers.ReLU(max_value=6., negative_slope=0.0, threshold=0.0)(mobile_net2.layers[-4].output)
+    out_layer = tf.keras.layers.GlobalAveragePooling2D()(out_layer)
+    print(mobile_net2.layers[-1].get_config())
+    out_layer = tf.keras.layers.Dense(105, activation='softmax', name='predictions')(out_layer)
+    model = tf.keras.models.Model(mobile_net2.layers[0].input, out_layer)
     print(model.summary())
     return model
 
@@ -57,6 +71,7 @@ def main(args):
         loss='sparse_categorical_crossentropy',
         metrics=['accuracy']
     )
+    print(model.summary())
     return 0
 
 if __name__ == '__main__':
