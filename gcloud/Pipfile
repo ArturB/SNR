@@ -6,6 +6,8 @@ verify_ssl = true
 [packages]
 matplotlib     = "*"
 tensorflow     = "*"
+h5py           = "*"
+keras_svm      = "*"
 
 [dev-packages]
 tensorflow-gpu = "*"

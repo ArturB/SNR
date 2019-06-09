@@ -189,3 +189,6 @@ if __name__ == '__main__':
         epochs=EPOCHS
     )
 
+    ##################  MODEL SAVE  ########################
+    model.save('model_z3b.h5')
+

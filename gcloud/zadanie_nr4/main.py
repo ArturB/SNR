@@ -12,6 +12,8 @@ import subprocess
 import tensorflow as tf
 import urllib.request
 import tarfile
+from sklearn.svm import SVC
+import keras_svm
 
 BATCH_SIZE = 25
 CPUs = tf.data.experimental.AUTOTUNE
@@ -146,48 +148,63 @@ if __name__ == '__main__':
     # MODEL DEFINITION #
     ####################
 
-    mobile_net = \
-        tf.keras.applications.MobileNetV2(
-            input_shape=IMG_SHAPE,
-            include_top=False
+    #################### LOAD MODEL ##################################
+    load = True
+    model_name = 'model_z3a.h5'
+    ##################  MODEL SAVE  ########################
+    if load:
+        model = tf.keras.models.load_model(model_name)
+    else:
+        ########## define and train model ####################
+        mobile_net = \
+            tf.keras.applications.MobileNetV2(
+                input_shape=IMG_SHAPE,
+                include_top=False
+            )
+        for layer in mobile_net.layers:
+            layer.trainable = False
+        model = tf.keras.Sequential([
+            mobile_net,
+            tf.keras.layers.GlobalAveragePooling2D(),
+            tf.keras.layers.Dense(label_num, activation=tf.nn.softmax)
+        ])
+        model.compile(
+            optimizer='adam',
+            loss='sparse_categorical_crossentropy',
+            metrics=['accuracy']
         )
-    for layer in mobile_net.layers:
-        layer.trainable = False
-    model = tf.keras.Sequential([
-        mobile_net,
-        tf.keras.layers.GlobalAveragePooling2D(),
-        tf.keras.layers.Dense(label_num, activation=tf.nn.softmax)
-    ])
-    model.compile(
-        optimizer='adam',
-        loss='sparse_categorical_crossentropy',
-        metrics=['accuracy']
-    )
 
-    #############
-    # END MODEL #
-    #############
+        board_callback = tf.keras.callbacks.TensorBoard(
+            log_dir="gs://snr/" + JOB_NAME + "/logs",
+            histogram_freq=1,
+            batch_size=BATCH_SIZE,
+            write_graph=True,
+            write_grads=True,
+            write_images=True,
+            embeddings_freq=0,
+            embeddings_layer_names=None,
+            embeddings_metadata=None,
+            embeddings_data=None,
+            update_freq='epoch'
+        )
+        history = model.fit(
+            train_ds,
+            steps_per_epoch=TRAIN_STEPS,
+            validation_data=test_ds,
+            validation_steps=TEST_STEPS,
+            verbose=1,
+            callbacks=[board_callback],
+            epochs=EPOCHS
+        )
 
-    board_callback = tf.keras.callbacks.TensorBoard(
-        log_dir="gs://snr/" + JOB_NAME + "/logs",
-        histogram_freq=1,
-        batch_size=BATCH_SIZE,
-        write_graph=True,
-        write_grads=True,
-        write_images=True,
-        embeddings_freq=0,
-        embeddings_layer_names=None,
-        embeddings_metadata=None,
-        embeddings_data=None,
-        update_freq='epoch'
-    )
-    history = model.fit(
-        train_ds,
-        steps_per_epoch=TRAIN_STEPS,
-        validation_data=test_ds,
-        validation_steps=TEST_STEPS,
-        verbose=1,
-        callbacks=[board_callback],
-        epochs=EPOCHS
-    )
+    ####################### SVM #############################
+
+    sk_model = SVC(kernel="linear", C=1e6, probability=True)
+    sk_model2 = SVC(kernel="rbf", C=1e6, probability=True)
+    sk_model3 = SVC(kernel="poly", degree=2, C=1e6, probability=True)
+
+    wrapped_model = keras_svm.ModelSVMWrapper(model, sk_model)
+    wrapped_model.fit_svm()
+
+
 
