@@ -190,5 +190,5 @@ if __name__ == '__main__':
     )
 
     ##################  MODEL SAVE  ########################
-    model.save('model_z3a.h5')
+    model.save("gs://snr/" + JOB_NAME + "/model/model.h5")
 
