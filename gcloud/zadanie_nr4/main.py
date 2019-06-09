@@ -238,8 +238,8 @@ if __name__ == '__main__':
     intermediate_model = tf.keras.models.Model(inputs=model.input,
                                                outputs=model.layers[-2].output)
 
-    gen = image_preparation("dataset_svm/test_set/", BATCH_SIZE, TARGET_SIZE)
-    test_gen = image_preparation("dataset_svm/valid_set/", BATCH_SIZE, TARGET_SIZE)
+    gen = image_preparation("dataset_svm/train_set/", BATCH_SIZE, TARGET_SIZE)
+    test_gen = image_preparation("dataset_svm/test_set/", BATCH_SIZE, TARGET_SIZE)
     history = intermediate_model.predict_generator(gen)
 
     for kernel in kernels:
