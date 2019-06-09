@@ -12,8 +12,10 @@ import subprocess
 import tensorflow as tf
 import urllib.request
 import tarfile
+
+from keras.preprocessing.image import ImageDataGenerator
 from sklearn.svm import SVC
-import keras_svm
+from sklearn.metrics import classification_report, confusion_matrix
 
 BATCH_SIZE = 25
 CPUs = tf.data.experimental.AUTOTUNE
@@ -24,6 +26,23 @@ TRAIN_SET_SIZE = 128000
 TEST_SET_SIZE = 14800
 TRAIN_STEPS = math.floor(TRAIN_SET_SIZE / BATCH_SIZE)
 TEST_STEPS = math.floor(TEST_SET_SIZE / BATCH_SIZE)
+
+TARGET_SIZE = (96, 96)
+
+def image_preparation(dirr, batch_size, target_size, validation_split=0.0, color_mode='rgb'):
+    train_data_dir = dirr
+    train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(validation_split=validation_split)
+    generator = train_datagen.flow_from_directory(train_data_dir,
+                                          target_size=target_size,
+                                          color_mode=color_mode,
+                                          classes=None,
+                                          class_mode='categorical',
+                                          batch_size=batch_size,
+                                          shuffle=True,
+                                          seed=None,
+                                          interpolation='nearest')
+    return generator
+
 
 
 class BatchImgDatasetFactory:
@@ -125,48 +144,55 @@ class BatchImgDatasetFactory:
 tf.enable_eager_execution()
 
 if __name__ == '__main__':
-    print(subprocess.check_output("pwd"))
-    urllib.request.urlretrieve("https://github.com/ArturB/SNR/releases/download/1.0.0/dataset.tar", "dataset-tar.tar")
-    print("URL retrieve done!")
-    td = tarfile.open("dataset-tar.tar")
-    td.extractall()
-    print("TAR extract done!")
-    print(subprocess.check_output(["ls", "-l"]))
 
-    imgF = BatchImgDatasetFactory(
-        batch_size_=BATCH_SIZE,
-        image_shape_=IMG_SHAPE,
-        output_range_=(-1, 1)
-    )
-    train_ds, test_ds, label_num = \
-        imgF.from_dir(
-            data_root_path="dataset",
-            train_images_num=TRAIN_SET_SIZE
-        )
 
     ####################
     # MODEL DEFINITION #
     ####################
-
-    #################### LOAD MODEL ##################################
-    load = True
+    model = None
+    #################### TEST MODEL ##################################
+    test = True
     model_name = 'model_z3a.h5'
     ##################  MODEL SAVE  ########################
-    if load:
-        model = tf.keras.models.load_model(model_name)
-    else:
-        ########## define and train model ####################
+    if test:
         mobile_net = \
+            tf.keras.applications.MobileNetV2(
+                input_shape=IMG_SHAPE,
+                include_top=True,
+                weights='imagenet'
+            )
+    else:
+        print(subprocess.check_output("pwd"))
+        urllib.request.urlretrieve("https://github.com/ArturB/SNR/releases/download/1.0.0/dataset.tar",
+                                   "dataset-tar.tar")
+        print("URL retrieve done!")
+        td = tarfile.open("dataset-tar.tar")
+        td.extractall()
+        print("TAR extract done!")
+        print(subprocess.check_output(["ls", "-l"]))
+
+        imgF = BatchImgDatasetFactory(
+            batch_size_=BATCH_SIZE,
+            image_shape_=IMG_SHAPE,
+            output_range_=(-1, 1)
+        )
+        train_ds, test_ds, label_num = \
+            imgF.from_dir(
+                data_root_path="dataset",
+                train_images_num=TRAIN_SET_SIZE
+            )
+
+
+        ########## define and train model ####################
+        mobile_net2 = \
             tf.keras.applications.MobileNetV2(
                 input_shape=IMG_SHAPE,
                 include_top=False
             )
-        for layer in mobile_net.layers:
-            layer.trainable = False
-        model = tf.keras.Sequential([
-            mobile_net,
+        model = tf.keras.models.Sequential([
+            mobile_net2,
             tf.keras.layers.GlobalAveragePooling2D(),
-            tf.keras.layers.Dense(label_num, activation=tf.nn.softmax)
+            tf.keras.layers.Dense(label_num, activation='softmax', name='predictions')
         ])
         model.compile(
             optimizer='adam',
@@ -174,6 +200,7 @@ if __name__ == '__main__':
             metrics=['accuracy']
         )
 
+    #############################################################
         board_callback = tf.keras.callbacks.TensorBoard(
             log_dir="gs://snr/" + JOB_NAME + "/logs",
             histogram_freq=1,
@@ -198,13 +225,32 @@ if __name__ == '__main__':
         )
 
     ####################### SVM #############################
+    print("######################### SVM BLOCK  #####################")
+    urllib.request.urlretrieve("https://github.com/ArturB/SNR/releases/download/1.0.1/dataset_svm.tar",
+                               "dataset_svm.tar")
+    print("URL retrieve done!")
+    td = tarfile.open("dataset-tar.tar")
+    td.extractall()
+    print("TAR extract done!")
 
-    sk_model = SVC(kernel="linear", C=1e6, probability=True)
-    sk_model2 = SVC(kernel="rbf", C=1e6, probability=True)
-    sk_model3 = SVC(kernel="poly", degree=2, C=1e6, probability=True)
 
-    wrapped_model = keras_svm.ModelSVMWrapper(model, sk_model)
-    wrapped_model.fit_svm()
+    kernels = ["linear", "rbf", "poly"]
+    intermediate_model = tf.keras.models.Model(inputs=model.input,
+                                               outputs=model.layers[-2].output)
+
+    gen = image_preparation("dataset_svm/test_set/", BATCH_SIZE, TARGET_SIZE)
+    test_gen = image_preparation("dataset_svm/valid_set/", BATCH_SIZE, TARGET_SIZE)
+    history = intermediate_model.predict_generator(gen)
+
+    for kernel in kernels:
+        print(kernel)
+        sk_model = SVC(kernel=kernel, C=1e6, probability=True)
+        sk_model.fit(history, gen.classes)
+        x_test = intermediate_model.predict(test_gen)
+        y_pred = sk_model.predict(x_test)
+        print(classification_report(test_gen.classes, y_pred))
+
+
 
 
 
